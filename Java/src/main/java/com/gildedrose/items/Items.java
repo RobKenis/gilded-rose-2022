@@ -15,6 +15,9 @@ public class Items {
         if (item.name.startsWith("Backstage passes")) {
             return new BackstagePass(item);
         }
+        if (item.name.startsWith("Conjured")) {
+            return new Conjured(item);
+        }
         return new NormalItem(item);
     }
 
