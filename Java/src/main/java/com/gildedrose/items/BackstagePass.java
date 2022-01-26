@@ -3,12 +3,10 @@ package com.gildedrose.items;
 import com.gildedrose.Item;
 import com.gildedrose.Updatable;
 
-public class BackstagePass implements Updatable {
-
-    private final Item item;
+public class BackstagePass extends Updatable {
 
     public BackstagePass(Item item) {
-        this.item = item;
+        super(item);
     }
 
     @Override

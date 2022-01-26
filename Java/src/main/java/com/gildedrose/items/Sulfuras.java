@@ -3,12 +3,10 @@ package com.gildedrose.items;
 import com.gildedrose.Item;
 import com.gildedrose.Updatable;
 
-public class Sulfuras implements Updatable {
-
-    private final Item item;
+public class Sulfuras extends Updatable {
 
     public Sulfuras(Item item) {
-        this.item = item;
+        super(item);
     }
 
     @Override

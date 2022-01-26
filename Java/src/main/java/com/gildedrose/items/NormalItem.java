@@ -3,16 +3,14 @@ package com.gildedrose.items;
 import com.gildedrose.Item;
 import com.gildedrose.Updatable;
 
-public class NormalItem implements Updatable {
-
-    private final Item item;
+public class NormalItem extends Updatable {
 
     public NormalItem(Item item) {
-        this.item = item;
+        super(item);
     }
 
     @Override
     public Item update() {
-        return null;
+        return new Item(item.name, item.sellIn - 1, decreaseQualityBy(1));
     }
 }

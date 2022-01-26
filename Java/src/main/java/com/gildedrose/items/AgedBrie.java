@@ -3,12 +3,10 @@ package com.gildedrose.items;
 import com.gildedrose.Item;
 import com.gildedrose.Updatable;
 
-public class AgedBrie implements Updatable {
-
-    private final Item item;
+public class AgedBrie extends Updatable {
 
     public AgedBrie(Item item) {
-        this.item = item;
+        super(item);
     }
 
     @Override
