@@ -12,7 +12,7 @@ class SulfurasTest {
     void sellInDecreasesButQualityNeverChanges() {
         Updatable item = new Sulfuras(new Item("test", 10, 80));
         Item update = item.update();
-        assertEquals(9, update.sellIn);
+        assertEquals(10, update.sellIn);
         assertEquals(80, update.quality);
     }
 
