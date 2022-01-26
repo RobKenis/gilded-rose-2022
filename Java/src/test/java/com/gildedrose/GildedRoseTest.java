@@ -13,7 +13,7 @@ class GildedRoseTest {
     @Test
     @Disabled("Let's write a proper test")
     void foo() {
-        Item[] items = new Item[] { new Item("foo", 0, 0) };
+        Item[] items = new Item[]{new Item("foo", 0, 0)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertEquals("fixme", app.items[0].name);
@@ -21,7 +21,7 @@ class GildedRoseTest {
 
     @BeforeEach
     void setUp() {
-        items = new Item[] {
+        items = new Item[]{
             new Item("+5 Dexterity Vest", 10, 20),
             new Item("Aged Brie", 2, 0),
             new Item("Elixir of the Mongoose", 5, 7),
@@ -31,7 +31,7 @@ class GildedRoseTest {
             new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
             new Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
             // this conjured item does not work properly yet
-            new Item("Conjured Mana Cake", 3, 6) };
+            new Item("Conjured Mana Cake", 3, 6)};
     }
 
     @Test
@@ -55,7 +55,103 @@ class GildedRoseTest {
         verifyItem(items[8], "Conjured Mana Cake", 2, 4);
     }
 
-    private void verifyItem(Item actual, String expectedName, int expectedSellIn, int expectedQuality){
+    @Test
+    void onceTheSellByDateHasPassedTheItemDegradesTwiceAsFast() {
+        Item[] items = {new Item("+5 Dexterity Vest", 2, 20)};
+        final GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        verifyItem(items[0], "+5 Dexterity Vest", 1, 19);
+        app.updateQuality();
+        verifyItem(items[0], "+5 Dexterity Vest", 0, 18);
+        app.updateQuality();
+        verifyItem(items[0], "+5 Dexterity Vest", -1, 16);
+        app.updateQuality();
+        verifyItem(items[0], "+5 Dexterity Vest", -2, 14);
+    }
+
+    @Test
+    void theQualityOfAnItemIsNeverNegative() {
+        Item[] items = {new Item("+5 Dexterity Vest", 2, 2)};
+        final GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        verifyItem(items[0], "+5 Dexterity Vest", 1, 1);
+        app.updateQuality();
+        verifyItem(items[0], "+5 Dexterity Vest", 0, 0);
+        app.updateQuality();
+        verifyItem(items[0], "+5 Dexterity Vest", -1, 0);
+        app.updateQuality();
+        verifyItem(items[0], "+5 Dexterity Vest", -2, 0);
+    }
+
+    @Test
+    void agedBrieActuallyIncreasesInValueTheOlderItGets() {
+        Item[] items = {new Item("Aged Brie", 2, 2)};
+        final GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        verifyItem(items[0], "Aged Brie", 1, 3);
+        app.updateQuality();
+        verifyItem(items[0], "Aged Brie", 0, 4);
+        app.updateQuality();
+        verifyItem(items[0], "Aged Brie", -1, 6);
+        app.updateQuality();
+        verifyItem(items[0], "Aged Brie", -2, 8);
+    }
+
+    @Test
+    void theQualityOfAnItemIsNeverMoreThan50() {
+        Item[] items = {new Item("Aged Brie", 2, 47)};
+        final GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        verifyItem(items[0], "Aged Brie", 1, 48);
+        app.updateQuality();
+        verifyItem(items[0], "Aged Brie", 0, 49);
+        app.updateQuality();
+        verifyItem(items[0], "Aged Brie", -1, 50);
+        app.updateQuality();
+        verifyItem(items[0], "Aged Brie", -2, 50);
+    }
+
+    @Test
+    void sulfurasNeverHasToBeSoldOrDecreasedInValue() {
+        Item[] items = {new Item("Sulfuras, Hand of Ragnaros", 2, 80)};
+        final GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        verifyItem(items[0], "Sulfuras, Hand of Ragnaros", 2, 80);
+    }
+
+    @Test
+    void backStagePassesIncreaseInValueAsItsSellByDateApproaches() {
+        Item[] items = {new Item("Backstage passes to a TAFKAL80ETC concert", 14, 21)};
+        final GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        verifyItem(items[0], "Backstage passes to a TAFKAL80ETC concert", 13, 22);
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        verifyItem(items[0], "Backstage passes to a TAFKAL80ETC concert", 9, 27);
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        app.updateQuality();
+        verifyItem(items[0], "Backstage passes to a TAFKAL80ETC concert", 1, 47);
+        app.updateQuality();
+        verifyItem(items[0], "Backstage passes to a TAFKAL80ETC concert", 0, 50);
+        app.updateQuality();
+        verifyItem(items[0], "Backstage passes to a TAFKAL80ETC concert", -1, 0);
+    }
+
+    private void verifyItem(Item actual, String expectedName, int expectedSellIn, int expectedQuality) {
         assertEquals(expectedName, actual.name);
         assertEquals(expectedSellIn, actual.sellIn);
         assertEquals(expectedQuality, actual.quality);
