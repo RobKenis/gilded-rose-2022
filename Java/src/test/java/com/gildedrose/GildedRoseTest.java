@@ -48,6 +48,13 @@ class GildedRoseTest {
         verifyItem(items[7], "Backstage passes to a TAFKAL80ETC concert", 4, 50);
     }
 
+    @Test
+    void conjuredManaCake() {
+        final GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        verifyItem(items[8], "Conjured Mana Cake", 2, 4);
+    }
+
     private void verifyItem(Item actual, String expectedName, int expectedSellIn, int expectedQuality){
         assertEquals(expectedName, actual.name);
         assertEquals(expectedSellIn, actual.sellIn);
