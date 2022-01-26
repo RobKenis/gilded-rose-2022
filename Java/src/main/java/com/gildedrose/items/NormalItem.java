@@ -11,6 +11,10 @@ public class NormalItem extends Updatable {
 
     @Override
     public Item update() {
-        return new Item(item.name, item.sellIn - 1, decreaseQualityBy(1));
+        if (sellInIsExpiredAfterUpdate()) {
+            return new Item(item.name, decreaseSellIn(), decreaseQualityBy(2));
+        } else {
+            return new Item(item.name, decreaseSellIn(), decreaseQualityBy(1));
+        }
     }
 }

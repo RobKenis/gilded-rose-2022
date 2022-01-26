@@ -11,6 +11,16 @@ public class BackstagePass extends Updatable {
 
     @Override
     public Item update() {
-        return null;
+        if (sellInIsExpiredAfterUpdate()) {
+            return new Item(item.name, decreaseSellIn(), 0);
+        } else {
+            if (item.sellIn <= 5){
+                return new Item(item.name, decreaseSellIn(), increaseQualityBy(3));
+            }
+            if (item.sellIn <= 10){
+                return new Item(item.name, decreaseSellIn(), increaseQualityBy(2));
+            }
+            return new Item(item.name, decreaseSellIn(), increaseQualityBy(1));
+        }
     }
 }

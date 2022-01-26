@@ -11,7 +11,11 @@ public class AgedBrie extends Updatable {
 
     @Override
     public Item update() {
-        return null;
+        if (sellInIsExpiredAfterUpdate()) {
+            return new Item(item.name, decreaseSellIn(), increaseQualityBy(2));
+        } else {
+            return new Item(item.name, decreaseSellIn(), increaseQualityBy(1));
+        }
     }
 
 }

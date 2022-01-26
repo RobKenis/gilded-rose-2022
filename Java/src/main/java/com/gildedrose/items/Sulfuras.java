@@ -11,6 +11,6 @@ public class Sulfuras extends Updatable {
 
     @Override
     public Item update() {
-        return null;
+        return new Item(item.name, decreaseSellIn(), item.quality);
     }
 }
